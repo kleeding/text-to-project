@@ -3,7 +3,6 @@ from gui.file_explorer import FileExplorer
 from gui.text_editor import TextEditor
 from gui.diagram_viewer import DiagramViewer
 
-
 class MainWindow(Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -23,9 +22,6 @@ class MainWindow(Frame):
         # Create diagram viewer
         self.diagram_viewer = DiagramViewer(self)
         self.diagram_viewer.grid(padx=5, pady=5, row=0, column=2, sticky="news")
-
-        print(self.file_explorer.winfo_reqwidth())
-        print(self.winfo_reqheight())
 
 if __name__ == "__main__":
 
