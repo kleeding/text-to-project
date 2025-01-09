@@ -68,10 +68,9 @@ class FileExplorer(LabelFrame):
 
     def clicked_file(self, event):
         tag = ""
-        f = self.explorer_canvas.gettags("current")
-        if f:
-            tag = f[0]
-
+        tags = self.explorer_canvas.gettags("current")
+        if tags:
+            tag = tags[0]
         if tag != "":
             if tag == self.selected_file:
                 return
@@ -84,15 +83,17 @@ class FileExplorer(LabelFrame):
             self.selected_file = tag
             self.turn_selected(self.selected_file, "on")
             ## --- LOAD FILE --- #
-            self.set_name(self.selected_file.replace("*-*", " "))
-            self.parent.load_file(self.selected_file.replace("*-*", " "))
+            file_name = self.selected_file.replace("*-*", " ")
+            self.set_name(file_name)
+            self.parent.load_file()
 
     def set_name(self, file_name):
         self.name_entry.delete(0,"end")
         self.name_entry.insert(0, file_name)
 
     def get_name(self):
-        return self.selected_file
+        file_name = self.selected_file.replace("*-*", " ")
+        return file_name
 
     def create_file(self):
         pass

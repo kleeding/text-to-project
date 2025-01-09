@@ -28,7 +28,7 @@ class UserInput(Frame):
         self.input_button_frame = Frame(self)
         self.input_button_frame.pack()
 
-        self.build_button = Button(self.input_button_frame, text="Undo", width=10)
+        self.build_button = Button(self.input_button_frame, text="Undo", width=10, command=self.undo_changes)
         self.build_button.pack(padx=10, pady=(10,5), ipady=7, side="left")
         self.build_button = Button(self.input_button_frame, text="Save", width=10, command=self.save_text)
         self.build_button.pack(padx=10, pady=(10,5), side="right", fill='y')
@@ -42,3 +42,7 @@ class UserInput(Frame):
         if self.made_changes:
             content = self.text_entry.get(1.0, 'end-1c')
             self.parent.save_file(content)
+
+    def undo_changes(self): ## CREATE A CONFIRMATION POPUP
+        if self.made_changes:
+            self.parent.load_file()

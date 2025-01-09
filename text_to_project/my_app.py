@@ -24,8 +24,9 @@ class WindowManager(Frame):
         self.diagram_viewer = DiagramViewer(self)
         self.diagram_viewer.grid(padx=5, pady=5, row=0, column=2, sticky="news")
 
-    def load_file(self, file_name):
-        if file_name != "":
+    def load_file(self): ##### no file name
+        file_name = self.file_explorer.get_name()
+        if file_name != "": 
             file_contents = self.file_manager.load_file(file_name + ".txt")
         else:
             file_contents = ""
@@ -34,7 +35,6 @@ class WindowManager(Frame):
     def save_file(self, content):
             file_name = self.file_explorer.get_name()
             self.file_manager.save_file(file_name, content)
-            print("saved")
 
     def create_file(self):
         pass

@@ -45,3 +45,9 @@ class FileManager():
         if file_name in self.file_names:
             self.file_names.remove(file_name)
             remove(join(self.project_path, file_name + ".txt"))
+
+    def set_opened_file(self, file_name):
+        self.set_opened_file = file_name
+
+    def get_opened_file(self):
+        return self.set_opened_file
