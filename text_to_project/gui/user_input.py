@@ -5,7 +5,7 @@ class UserInput(Frame):
         super().__init__(parent)
         self.parent = parent
 
-        self.made_changes = False
+        self.made_changes = True
 
         # --- Set up Text Editor --- #
         self.editor_frame = LabelFrame(self, text="Text Editor")
@@ -30,18 +30,15 @@ class UserInput(Frame):
 
         self.build_button = Button(self.input_button_frame, text="Undo", width=10)
         self.build_button.pack(padx=10, pady=(10,5), ipady=7, side="left")
-        self.build_button = Button(self.input_button_frame, text="Save", width=10)
+        self.build_button = Button(self.input_button_frame, text="Save", width=10, command=self.save_text)
         self.build_button.pack(padx=10, pady=(10,5), side="right", fill='y')
-
-
 
     def set_input(self, content):
         self.text_entry.delete(1.0,"end")
         for i in range(len(content)):
             self.text_entry.insert(str(i + 1) + ".0", content[i])
-    
-    def get_input(self):
-        return self.text_entry.get()
 
     def save_text(self):
-        return
+        if self.made_changes:
+            content = self.text_entry.get(1.0, 'end-1c')
+            self.parent.save_file(content)

@@ -7,7 +7,7 @@ class FileManager():
 
         self.file_names = self.get_files()
 
-        # self.load_file('Calculator.txt')
+        # self.load_file('Calculator.txt') ## Load an initial file?? First in list
 
     def get_files(self):
         file_names = []
@@ -30,13 +30,16 @@ class FileManager():
         return txt
     
     def create_file(self, file_name):
-        open(join(self.project_path, file_name + ".txt"), 'w')
+        file = open(join(self.project_path, file_name + ".txt"), 'w')
+        file.close()
         self.file_names.append(file_name)
         self.file_names = sorted(self.file_names)
 
-    def save_file(self, file_name):
-        
-        pass
+    def save_file(self, file_name, contents):
+        self.delete_file(file_name)
+        with open(join(self.project_path, file_name + ".txt"), 'w') as file:
+            for line in contents:
+                file.write(line)
 
     def delete_file(self, file_name):
         if file_name in self.file_names:

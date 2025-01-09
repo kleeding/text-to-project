@@ -91,6 +91,9 @@ class FileExplorer(LabelFrame):
         self.name_entry.delete(0,"end")
         self.name_entry.insert(0, file_name)
 
+    def get_name(self):
+        return self.selected_file
+
     def create_file(self):
         pass
     
