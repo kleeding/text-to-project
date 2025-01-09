@@ -32,8 +32,11 @@ class WindowManager(Frame):
             file_contents = ""
         self.user_input.set_input(file_contents)
 
-    def save_file(self, content):
+    def save_file(self):
             file_name = self.file_explorer.get_name()
+            print("file name:", file_name)
+            content = self.user_input.get_input()
+            print("content:", content)
             self.file_manager.save_file(file_name, content)
 
     def create_file(self):

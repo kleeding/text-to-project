@@ -38,10 +38,13 @@ class UserInput(Frame):
         for i in range(len(content)):
             self.text_entry.insert(str(i + 1) + ".0", content[i])
 
+    def get_input(self):
+        content = self.text_entry.get(1.0, 'end-1c')
+        return content
+
     def save_text(self):
         if self.made_changes:
-            content = self.text_entry.get(1.0, 'end-1c')
-            self.parent.save_file(content)
+            self.parent.save_file()
 
     def undo_changes(self): ## CREATE A CONFIRMATION POPUP
         if self.made_changes:

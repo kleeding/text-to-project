@@ -27,8 +27,6 @@ class FileExplorer(LabelFrame):
         self.delete_button.grid(padx=5, pady=5, row=1, column=1, sticky='ns')
         self.create_button = Button(self.file_button_frame, text="Create")
         self.create_button.grid(padx=5, pady=5, row=1, column=2, sticky='ns')
-        self.create_button = Button(self.file_button_frame, text="test", command=self.messageWindow)
-        self.create_button.grid(padx=5, pady=5, row=2, column=1, sticky='ns')
 
     def set_selected(self, tag):
         self.selected_file = tag
@@ -55,16 +53,6 @@ class FileExplorer(LabelFrame):
         elif mode == "off":
             self.explorer_canvas.itemconfig(rect, fill="white", outline="white")
             self.explorer_canvas.itemconfig(text, fill="black")
-    
-    def messageWindow(self):
-        win = Toplevel()
-        win.title('Save Changes')
-        win.geometry("300x100")
-
-        Label(win, text="Do you want to save your changes?").pack(padx=10, pady=10, fill='x')
-        Button(win, text='Save', command=win.destroy).pack(padx=10, pady=10, side='left')
-        Button(win, text='Discard', command=win.destroy).pack(padx=10, pady=10, side='left')
-        Button(win, text='Cancel', command=win.destroy).pack(padx=10, pady=10, side='left')
 
     def clicked_file(self, event):
         tag = ""
@@ -75,9 +63,14 @@ class FileExplorer(LabelFrame):
             if tag == self.selected_file:
                 return
             ## ----------------- #
-            if self.selected_file != "":
-                ## --- NEED TO SAVE IT --- #
-                # self.parent.save_file(tag)
+            if self.selected_file != "": # <-- Indicating changing files
+                if self.parent.user_input.made_changes: # <-- if changes have been made, see if these should be saved
+                    confirm = ConfirmationWindow(self)
+                    switch = confirm.show()
+                    if switch == 0:
+                        return # < -- Cancelled
+                    elif switch == 2:
+                        self.parent.save_file()
                 ## ----------------------- #
                 self.turn_selected(self.selected_file, "off")
             self.selected_file = tag
@@ -100,3 +93,34 @@ class FileExplorer(LabelFrame):
     
     def delete_file(self):
         pass
+
+class ConfirmationWindow(Toplevel):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.title('Save Changes')
+        self.geometry("300x100")
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure((0,1,2), weight=1, uniform=1)
+
+        self.switch = 1
+        
+        Label(self, text="Do you want to save your changes?").grid(pady=(25,5), row=0, column=0, columnspan=3, sticky="news")
+        Button(self, text='Save', width=8, command=self.save).grid(padx=(10), pady=15, row=1, column=0, sticky="e")
+        Button(self, text='Discard', width=8, command=self.destroy).grid(padx=10, pady=15, row=1, column=1, sticky="w")
+        Button(self, text='Cancel', width=8, command=self.cancel).grid(padx=10, pady=15, row=1, column=2, sticky="w")
+
+    def save(self):
+        self.switch = 2
+        self.destroy()
+
+    def cancel(self):
+        self.switch = 0
+        self.destroy()
+
+    def show(self):
+        self.deiconify()
+        self.wm_protocol("WM_DELETE_WINDOW", self.destroy)
+        self.wait_window(self)
+        return self.switch
