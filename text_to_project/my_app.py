@@ -24,23 +24,24 @@ class WindowManager(Frame):
         self.diagram_viewer = DiagramViewer(self)
         self.diagram_viewer.grid(padx=5, pady=5, row=0, column=2, sticky="news")
 
-    def load_file(self): ##### no file name
+    def load_file(self):
         file_name = self.file_explorer.get_name()
         if file_name != "": 
             file_contents = self.file_manager.load_file(file_name + ".txt")
         else:
             file_contents = ""
-        self.user_input.set_input(file_contents)
+        self.user_input.set_content(file_contents)
 
     def save_file(self):
             file_name = self.file_explorer.get_name()
-            print("file name:", file_name)
             content = self.user_input.get_input()
-            print("content:", content)
             self.file_manager.save_file(file_name, content)
 
     def create_file(self):
-        pass
+        file_name = self.file_explorer.get_name()
+        current_files = self.file_manager.get_names()
+        if file_name != "" and file_name not in current_files:
+            self.file_manager.create_file(file_name)
         # file_name = self.name_entry.get()
         # if file_name != "" and file_name not in self.file_names:
         #     self.parent.file_manager.create_file(file_name)
@@ -61,6 +62,10 @@ class WindowManager(Frame):
         #     self.file_names = self.parent.file_manager.get_names()
         #     self.file_viewer.set_viewer(self.file_names)
         #     self.parent.load_file("")
+
+    def changes_made(self):
+        output = self.user_input.has_changed()
+        return output
 
 if __name__ == "__main__":    
     project_path = "text_to_project\projects"

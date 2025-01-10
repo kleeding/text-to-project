@@ -60,18 +60,16 @@ class FileExplorer(LabelFrame):
         if tags:
             tag = tags[0]
         if tag != "":
-            if tag == self.selected_file:
+            if tag == self.selected_file: # <-- Same file clicked - do nothing
                 return
-            ## ----------------- #
             if self.selected_file != "": # <-- Indicating changing files
-                if self.parent.user_input.made_changes: # <-- if changes have been made, see if these should be saved
+                if self.parent.changes_made(): # <-- if changes have been made, see if these should be saved
                     confirm = ConfirmationWindow(self)
                     switch = confirm.show()
                     if switch == 0:
                         return # < -- Cancelled
                     elif switch == 2:
                         self.parent.save_file()
-                ## ----------------------- #
                 self.turn_selected(self.selected_file, "off")
             self.selected_file = tag
             self.turn_selected(self.selected_file, "on")
@@ -106,9 +104,9 @@ class ConfirmationWindow(Toplevel):
 
         self.switch = 1
         
-        Label(self, text="Do you want to save your changes?").grid(pady=(25,5), row=0, column=0, columnspan=3, sticky="news")
+        Label(self, text="Do you want to save your changes?").grid(pady=(25,0), row=0, column=0, columnspan=3, sticky="news")
         Button(self, text='Save', width=8, command=self.save).grid(padx=(10), pady=15, row=1, column=0, sticky="e")
-        Button(self, text='Discard', width=8, command=self.destroy).grid(padx=10, pady=15, row=1, column=1, sticky="w")
+        Button(self, text='Discard', width=8, command=self.destroy).grid(padx=10, pady=15, row=1, column=1)
         Button(self, text='Cancel', width=8, command=self.cancel).grid(padx=10, pady=15, row=1, column=2, sticky="w")
 
     def save(self):

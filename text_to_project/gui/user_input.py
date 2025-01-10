@@ -5,8 +5,6 @@ class UserInput(Frame):
         super().__init__(parent)
         self.parent = parent
 
-        self.made_changes = True
-
         # --- Set up Text Editor --- #
         self.editor_frame = LabelFrame(self, text="Text Editor")
         self.editor_frame.pack(padx=5, pady=5, fill='both', expand=True)        
@@ -23,7 +21,7 @@ class UserInput(Frame):
         
         self.text_entry['xscrollcommand'] = self.x_scoller.set   
         self.text_entry['yscrollcommand'] = self.y_scoller.set
-                
+        
         # --- Set up Editor Buttons --- #
         self.input_button_frame = Frame(self)
         self.input_button_frame.pack()
@@ -33,28 +31,36 @@ class UserInput(Frame):
         self.build_button = Button(self.input_button_frame, text="Save", width=10, command=self.save_text)
         self.build_button.pack(padx=10, pady=(10,5), side="right", fill='y')
 
-    def set_input(self, content):
+    def set_content(self, content):
+        self.content = content
         self.text_entry.delete(1.0,"end")
         for i in range(len(content)):
             self.text_entry.insert(str(i + 1) + ".0", content[i])
+
+    def has_changed(self):
+        input = self.get_input().split("\n")
+        input_list = [line+"\n" for line in input]
+        input_list[-1] = input_list[-1].replace("\n", "")
+        if self.content == input_list:
+            return False
+        return True
 
     def get_input(self):
         content = self.text_entry.get(1.0, 'end-1c')
         return content
 
     def save_text(self):
-        if self.made_changes:
+        made_changes = self.has_changed()
+        if made_changes:
             self.parent.save_file()
 
-    def undo_changes(self): ## CREATE A CONFIRMATION POPUP
-        if self.made_changes:
+    def undo_changes(self):
+        made_changes = self.has_changed()
+        if made_changes:
             confirmation = ConfirmationUndoWindow(self)
             confirm = confirmation.show()
             if confirm:
                 self.parent.load_file()
-
-    # def made_changes(self, made):
-    #     self.parent.changes_made = made
 
 class ConfirmationUndoWindow(Toplevel):
     def __init__(self, parent):
