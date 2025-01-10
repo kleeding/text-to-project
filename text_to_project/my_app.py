@@ -25,11 +25,11 @@ class WindowManager(Frame):
         self.diagram_viewer.grid(padx=5, pady=5, row=0, column=2, sticky="news")
 
     def load_file(self):
-        file_name = self.file_explorer.get_name()
+        file_name = self.file_explorer.get_name_selected()
         if file_name != "": 
             file_contents = self.file_manager.load_file(file_name + ".txt")
         else:
-            file_contents = ""
+            file_contents = ['']
         self.user_input.set_content(file_contents)
 
     def save_file(self):
@@ -37,20 +37,16 @@ class WindowManager(Frame):
             content = self.user_input.get_input()
             self.file_manager.save_file(file_name, content)
 
-    def create_file(self):
-        file_name = self.file_explorer.get_name()
+    def create_file(self, file_name):
         current_files = self.file_manager.get_names()
-        if file_name != "" and file_name not in current_files:
-            self.file_manager.create_file(file_name)
-        # file_name = self.name_entry.get()
-        # if file_name != "" and file_name not in self.file_names:
-        #     self.parent.file_manager.create_file(file_name)
-        #     self.file_names = self.parent.file_manager.get_names()
-        #     self.file_viewer.set_viewer(self.file_names)
-        #     self.parent.load_file(file_name)
-        #     tag = file_name.replace(" ", "*-*")
-        #     self.file_viewer.set_selected(tag)
-        #     self.file_viewer.turn_selected(tag, "on")
+        if file_name not in current_files: # <-- file doesn't exist
+            self.file_manager.create_file(file_name) # create it
+            file_names = self.file_manager.get_names()
+            self.file_explorer.set_viewer(file_names)
+            tag = file_name.replace(" ", "*-*")
+            self.file_explorer.set_selected(tag)
+            self.file_explorer.turn_selected(tag, "on")
+            self.load_file()
         
     ## --- ADD A CONFIRM MESSAGE FOR DELETION --- #
     def delete_file(self):

@@ -23,9 +23,9 @@ class FileExplorer(LabelFrame):
         self.name_entry = Entry(self.file_button_frame)
         self.name_entry.grid(padx=5, pady=5, row=0, column=1, columnspan=2, sticky='news')
 
-        self.delete_button = Button(self.file_button_frame, text="Delete")
+        self.delete_button = Button(self.file_button_frame, text="Delete", command=self.delete_file)
         self.delete_button.grid(padx=5, pady=5, row=1, column=1, sticky='ns')
-        self.create_button = Button(self.file_button_frame, text="Create")
+        self.create_button = Button(self.file_button_frame, text="Create", command=self.create_file)
         self.create_button.grid(padx=5, pady=5, row=1, column=2, sticky='ns')
 
     def set_selected(self, tag):
@@ -82,15 +82,22 @@ class FileExplorer(LabelFrame):
         self.name_entry.delete(0,"end")
         self.name_entry.insert(0, file_name)
 
-    def get_name(self):
+    def get_name_selected(self):
         file_name = self.selected_file.replace("*-*", " ")
         return file_name
+    
+    # def get_name_input(self):
+    #     file_name = self.name_entry.get()
+    #     return file_name
 
     def create_file(self):
-        pass
+        file_name = self.name_entry.get()
+        if file_name != "":
+                self.parent.create_file(file_name)
     
     def delete_file(self):
-        pass
+        print("deleting file")
+        self.parent.delete_file()
 
 class ConfirmationWindow(Toplevel):
     def __init__(self, parent):

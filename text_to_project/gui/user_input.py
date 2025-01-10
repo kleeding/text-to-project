@@ -41,6 +41,9 @@ class UserInput(Frame):
         input = self.get_input().split("\n")
         input_list = [line+"\n" for line in input]
         input_list[-1] = input_list[-1].replace("\n", "")
+
+        if self.content == [] and input_list[0] == '':
+            return False
         if self.content == input_list:
             return False
         return True
