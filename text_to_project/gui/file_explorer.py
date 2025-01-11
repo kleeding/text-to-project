@@ -33,15 +33,16 @@ class FileExplorer(LabelFrame):
 
     def set_viewer(self, folder_info):
         self.explorer_canvas.delete("all")
+        s = 25
         x = 10
         y = 0
         index = 0
         for file in folder_info:
             txt = file + "\n"
             tag = file.replace(" ", "*-*")
-            self.explorer_canvas.create_rectangle(0, y, 200, y + 30, tags=[tag, tag + "_rect_element"], fill="white", outline="white")
-            self.explorer_canvas.create_text(x, y + 22.5, text=txt, anchor='w', tags=[tag, tag + "_text_element"])
-            y += 30
+            self.explorer_canvas.create_rectangle(0, y, 200, y + s, tags=[tag, tag + "_rect_element"], fill="white", outline="white")
+            self.explorer_canvas.create_text(x, y + (s / 2 + 8), text=txt, anchor='w', tags=[tag, tag + "_text_element"])
+            y += s
             index += 1
         self.selected_file = ""
 
