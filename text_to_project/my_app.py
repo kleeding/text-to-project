@@ -1,4 +1,4 @@
-from tkinter import Tk, Frame
+from tkinter import Tk, Frame, Label, Button, Toplevel
 from gui.file_explorer import FileExplorer
 from gui.user_input import UserInput
 from gui.diagram_viewer import DiagramViewer
@@ -33,7 +33,7 @@ class WindowManager(Frame):
         self.user_input.set_content(file_contents)
 
     def save_file(self):
-            file_name = self.file_explorer.get_name()
+            file_name = self.file_explorer.get_name_selected()
             content = self.user_input.get_input()
             self.file_manager.save_file(file_name, content)
 
@@ -48,20 +48,48 @@ class WindowManager(Frame):
             self.file_explorer.turn_selected(tag, "on")
             self.load_file()
         
-    ## --- ADD A CONFIRM MESSAGE FOR DELETION --- #
-    def delete_file(self):
-        pass
-        # file_name = self.name_entry.get()
-        # if file_name != "" and file_name in self.file_names:
-        #     # DELETE FILE FROM PROJECT FOLDER
-        #     self.parent.file_manager.delete_file(file_name)
-        #     self.file_names = self.parent.file_manager.get_names()
-        #     self.file_viewer.set_viewer(self.file_names)
-        #     self.parent.load_file("")
+    def delete_file(self, file_name):
+        current_files = self.file_manager.get_names()
+        if file_name in current_files:
+            confirmation = ConfirmationDeleteWindow(self)
+            confirmed = confirmation.show()
+            if not confirmed: # <-- user cancelled deletion
+                return
+            self.file_manager.delete_file(file_name)
+            file_names = self.file_manager.get_names()
+            self.file_explorer.set_viewer(file_names)
+            self.load_file()
 
     def changes_made(self):
         output = self.user_input.has_changed()
         return output
+
+## Remove this and create a separate class for confirmation windows
+class ConfirmationDeleteWindow(Toplevel):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.title('Confirm Delete')
+        self.geometry("300x100")
+
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure((0,1), weight=1, uniform=1)
+
+        self.confirmation_return = False
+        
+        Label(self, text="Are you sure you want to delete this file?").grid(pady=(25,0), row=0, column=0, columnspan=2, sticky="news")
+        Button(self, text='Yes', width=8, command=self.yes).grid(padx=(10), pady=15, row=1, column=0, sticky="e")
+        Button(self, text='Cancel', width=8, command=self.destroy).grid(padx=10, pady=15, row=1, column=1, sticky="w")
+
+    def yes(self):
+        self.confirmation_return = True
+        self.destroy()
+
+    def show(self):
+        self.deiconify()
+        self.wm_protocol("WM_DELETE_WINDOW", self.destroy)
+        self.wait_window(self)
+        return self.confirmation_return
 
 if __name__ == "__main__":    
     project_path = "text_to_project\projects"
