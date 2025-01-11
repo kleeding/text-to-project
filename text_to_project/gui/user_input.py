@@ -32,19 +32,14 @@ class UserInput(Frame):
         self.build_button.pack(padx=10, pady=(10,5), side="right", fill='y')
 
     def set_content(self, content):
-        self.content = content
         self.text_entry.delete(1.0,"end")
         for i in range(len(content)):
             self.text_entry.insert(str(i + 1) + ".0", content[i])
+        self.content = self.get_input()
 
     def has_changed(self):
-        input = self.get_input().split("\n")
-        input_list = [line+"\n" for line in input]
-        input_list[-1] = input_list[-1].replace("\n", "")
-
-        if self.content == [] and input_list[0] == '':
-            return False
-        if self.content == input_list:
+        input = self.get_input()
+        if self.content == input:
             return False
         return True
 
@@ -56,6 +51,9 @@ class UserInput(Frame):
         made_changes = self.has_changed()
         if made_changes:
             self.parent.save_file()
+            print(self.content)
+            self.content = self.get_input()
+            print(self.content)
 
     def undo_changes(self):
         made_changes = self.has_changed()

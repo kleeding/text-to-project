@@ -44,7 +44,9 @@ class FileManager():
     def delete_file(self, file_name):
         if file_name in self.file_names:
             self.file_names.remove(file_name)
-            remove(join(self.project_path, file_name + ".txt"))
+            remove(join(self.project_path, file_name + ".txt")) ## Probably worth checking file exists first
+                                                                ## Since the application doesn't keep files open
+                                                                ## might have been deleted/moved/altered otherwise
 
     def set_opened_file(self, file_name):
         self.set_opened_file = file_name

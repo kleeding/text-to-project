@@ -43,6 +43,7 @@ class FileExplorer(LabelFrame):
             self.explorer_canvas.create_text(x, y + 22.5, text=txt, anchor='w', tags=[tag, tag + "_text_element"])
             y += 30
             index += 1
+        self.selected_file = ""
 
     def turn_selected(self, tag, mode):
         rect = tag + "_rect_element"
@@ -96,8 +97,9 @@ class FileExplorer(LabelFrame):
                 self.parent.create_file(file_name)
     
     def delete_file(self):
-        print("deleting file")
-        self.parent.delete_file()
+        file_name = self.get_name_selected()
+        if file_name != "":
+            self.parent.delete_file(file_name)
 
 class ConfirmationWindow(Toplevel):
     def __init__(self, parent):
