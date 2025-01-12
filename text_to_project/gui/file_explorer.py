@@ -1,4 +1,5 @@
-from tkinter import LabelFrame, Frame, Canvas, Label, Button, Entry, Toplevel
+from tkinter import LabelFrame, Frame, Canvas, Label, Button, Entry
+from gui.components.confirmation_windows import ConfirmationWindow
 
 class FileExplorer(LabelFrame):
     def __init__(self, parent, file_names):
@@ -66,11 +67,16 @@ class FileExplorer(LabelFrame):
                 return
             if self.selected_file != "": # <-- Indicating changing files
                 if self.parent.changes_made(): # <-- if changes have been made, see if these should be saved
-                    confirm = ConfirmationWindow(self)
-                    switch = confirm.show()
-                    if switch == 0:
+                    confirmation = ConfirmationWindow(self, 
+                                                      "Save Changes", 
+                                                      "300x100", 
+                                                      "Do you want to save your changes?",
+                                                      ["Save", "Discard", "Cancel"])
+                    confirm = confirmation.show()
+                    print(confirm)
+                    if confirm == 2:
                         return # < -- Cancelled
-                    elif switch == 2:
+                    elif confirm == 0:
                         self.parent.save_file()
                 self.turn_selected(self.selected_file, "off")
             self.selected_file = tag
@@ -101,34 +107,3 @@ class FileExplorer(LabelFrame):
         file_name = self.get_name_selected()
         if file_name != "":
             self.parent.delete_file(file_name)
-
-class ConfirmationWindow(Toplevel):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-        self.title('Save Changes')
-        self.geometry("300x100")
-
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure((0,1,2), weight=1, uniform=1)
-
-        self.switch = 1
-        
-        Label(self, text="Do you want to save your changes?").grid(pady=(25,0), row=0, column=0, columnspan=3, sticky="news")
-        Button(self, text='Save', width=8, command=self.save).grid(padx=(10), pady=15, row=1, column=0, sticky="e")
-        Button(self, text='Discard', width=8, command=self.destroy).grid(padx=10, pady=15, row=1, column=1)
-        Button(self, text='Cancel', width=8, command=self.cancel).grid(padx=10, pady=15, row=1, column=2, sticky="w")
-
-    def save(self):
-        self.switch = 2
-        self.destroy()
-
-    def cancel(self):
-        self.switch = 0
-        self.destroy()
-
-    def show(self):
-        self.deiconify()
-        self.wm_protocol("WM_DELETE_WINDOW", self.destroy)
-        self.wait_window(self)
-        return self.switch

@@ -1,5 +1,5 @@
-from tkinter import LabelFrame, Frame, Text, Label, Scrollbar, Button, Toplevel
-
+from tkinter import LabelFrame, Frame, Text, Label, Scrollbar, Button
+from gui.components.confirmation_windows import ConfirmationWindow
 class UserInput(Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -51,40 +51,16 @@ class UserInput(Frame):
         made_changes = self.has_changed()
         if made_changes:
             self.parent.save_file()
-            print(self.content)
             self.content = self.get_input()
-            print(self.content)
 
     def undo_changes(self):
         made_changes = self.has_changed()
         if made_changes:
-            confirmation = ConfirmationUndoWindow(self)
+            confirmation = ConfirmationWindow(self, 
+                                              "Undo Changes", 
+                                              "300x100",
+                                              "Are you sure you want to undo your changes?",
+                                              ["Undo", "Cancel"])
             confirm = confirmation.show()
-            if confirm:
+            if confirm == 0: # <-- Confirmed to undo text
                 self.parent.load_file()
-
-class ConfirmationUndoWindow(Toplevel):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-        self.title('Undo Changes')
-        self.geometry("300x100")
-
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure((0,1), weight=1, uniform=1)
-
-        self.confirmation_return = False
-        
-        Label(self, text="Are you sure you want to undo your changes?").grid(pady=(25,0), row=0, column=0, columnspan=2, sticky="news")
-        Button(self, text='Undo', width=8, command=self.undo).grid(padx=(10), pady=15, row=1, column=0, sticky="e")
-        Button(self, text='Cancel', width=8, command=self.destroy).grid(padx=10, pady=15, row=1, column=1, sticky="w")
-
-    def undo(self):
-        self.confirmation_return = True
-        self.destroy()
-
-    def show(self):
-        self.deiconify()
-        self.wm_protocol("WM_DELETE_WINDOW", self.destroy)
-        self.wait_window(self)
-        return self.confirmation_return
