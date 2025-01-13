@@ -1,11 +1,16 @@
-Calculator
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
+Script: 
+	Calculator
+Variables:
+	expression string global
+Functions:
+	press <- _
+	clear <- _
+	evaluate <- _
+Main:
+	root :: Tk()
+	_ :: Entry(root).grid(r0,c0,cs4)
+	_ :: Button(root).grid(r0,c0,cs2)
+	_ :: Button(root).grid(r0,c2)
+	_ :: Button(root).grid(r1,c0)*(3*4)
+	_ :: Button(root).grid(r4,c0,cs2)
+	_ :: Button(root).grid(r4,c2)*(1*2)

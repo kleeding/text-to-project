@@ -29,7 +29,14 @@ class UserInput(Frame):
         self.build_button = Button(self.input_button_frame, text="Undo", width=10, command=self.undo_changes)
         self.build_button.pack(padx=10, pady=(10,5), ipady=7, side="left")
         self.build_button = Button(self.input_button_frame, text="Save", width=10, command=self.save_text)
-        self.build_button.pack(padx=10, pady=(10,5), side="right", fill='y')
+        self.build_button.pack(padx=10, pady=(10,5), side="left", fill='y')
+        self.create_diagram_button = Button(self.input_button_frame, text="Create\nDiagram", width=10)
+        self.create_diagram_button.pack(padx=10, pady=(10,5), side="left")
+        self.build_button = Button(self.input_button_frame, text="Build\nProject", width=10, command=self.build_project)
+        self.build_button.pack(padx=10, pady=(10,5), side="left")
+
+    def build_project(self):
+        self.parent.build_project()
 
     def set_content(self, content):
         self.text_entry.delete(1.0,"end")
