@@ -39,7 +39,7 @@ class UserInput(Frame):
         self.parent.build_project()
 
     def set_content(self, content):
-        self.text_entry.delete(1.0,"end")
+        self.text_entry.delete(1.0, "end")
         for i in range(len(content)):
             self.text_entry.insert(str(i + 1) + ".0", content[i])
         self.content = self.get_input()
