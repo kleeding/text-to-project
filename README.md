@@ -1,3 +1,3 @@
 # Text-to-Project
 
-Application will take text input and create UML-style Class Diagrams and create project structures/base class files.
+Application will take text input and create project structures and the base script and class files.
