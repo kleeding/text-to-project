@@ -1,9 +1,10 @@
 from tkinter import Tk, Frame
 from gui.file_explorer import FileExplorer
 from gui.user_input import UserInput
-from gui.diagram_viewer import DiagramViewer
-from gui.backend.file_manager import FileManager
+from gui.project_viewer import ProjectViewer
 from gui.components.confirmation_windows import ConfirmationWindow
+from gui.backend.file_manager import FileManager
+from gui.backend.project_parser import project_parser
 
 class WindowManager(Frame):
     def __init__(self, parent):
@@ -22,8 +23,8 @@ class WindowManager(Frame):
         self.user_input.grid(padx=5, pady=5, row=0, column=1, sticky="news")
 
         # Create diagram viewer
-        self.diagram_viewer = DiagramViewer(self)
-        self.diagram_viewer.grid(padx=5, pady=5, row=0, column=2, sticky="news")
+        self.project_viewer = ProjectViewer(self)
+        self.project_viewer.grid(padx=5, pady=5, row=0, column=2, sticky="news")
 
     def load_file(self):
         file_name = self.file_explorer.get_name_selected()
@@ -68,6 +69,13 @@ class WindowManager(Frame):
     def changes_made(self):
         output = self.user_input.has_changed()
         return output
+
+    def build_project(self):
+        content = self.user_input.get_input()
+        if content != "":
+            project = project_parser(content)
+        if project:
+            self.project_viewer.set_content(project)
 
 if __name__ == "__main__":    
     project_path = "text_to_project\projects"
