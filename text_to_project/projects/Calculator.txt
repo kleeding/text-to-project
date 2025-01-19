@@ -1,12 +1,14 @@
-Script: 
+Project
 	Calculator
-Variables:
+Variables
 	expression string global
-Functions:
-	press <- _
-	clear <- _
-	evaluate <- _
-Main:
+Functions
+	press <- _ -> _
+	clear <- _ -> _
+	evaluate <- _ -> _
+	crazy_function <- a,b, c,d,e,f,g -> h, i,j,k,l,m,n,o,p
+		_ :: Entry(root).grid(r0,c0,cs4)
+Main
 	root :: Tk()
 	_ :: Entry(root).grid(r0,c0,cs4)
 	_ :: Button(root).grid(r0,c0,cs2)
