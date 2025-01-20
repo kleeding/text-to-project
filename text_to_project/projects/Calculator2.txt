@@ -1,0 +1,18 @@
+Project
+	Calculator
+Variables
+	expression string global
+Functions
+	press <- _ -> _
+	clear <- _ -> _
+	evaluate <- _ -> _
+	crazy_function <- a,b, c,d,e,f,g -> h, i,j,k,l,m,n,o,p
+		_ :: Entry(root).grid(r0,c0,cs4)
+Main:
+	root :: Tk()
+	_ :: Entry() grid(r0,c0,cs4)
+	_ :: Button() grid(r0,c0,cs2) text=["C"] command=clear
+	_ :: Button() grid(r0,c2) text=["/"] command=press
+	_ :: Button() grid(r1,c0)*(3*4) text=["7","8","9","*","4","5","6","-","1","2","3","+"] command=press
+	_ :: Button() grid(r4,c0,cs2) text=["0"] command=press
+	_ :: Button() grid(r4,c2)*(1*2) text=[".","="] command=press
